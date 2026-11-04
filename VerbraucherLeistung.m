@@ -1,0 +1,34 @@
+function [Pl, eff] = VerbraucherLeistung(Ri, Rl, U0)
+% Funktion VerbraucherLeistung
+% Autor            : Ihr Name
+% Erstellungsdatum : 04.11.2026
+% Beschreibung     : Berechnet die Leistung Pl im Verbraucher und den
+%                    Wirkungsgrad eff (in %) in Abhaengigkeit vom
+%                    Lastwiderstand Rl. Gibt die maximale Leistung und
+%                    den Wirkungsgrad an diesem Punkt aus.
+% Input            : Skalar Ri (Dimension 1,1);
+%                    Vektor Rl (Dimension n,1);
+%                    Skalar U0 (Dimension 1,1);
+% Output           : Vektor Pl (Dimension n,1);
+%                    Vektor eff (Dimension n,1);
+
+    %% Eingangspruefung
+    % Ri und U0 muessen Skalare sein, Rl muss ein Spaltenvektor sein
+    if ~isscalar(Ri) || ~isscalar(U0) || ~iscolumn(Rl)
+        error('Die Dimensionen stimmen nicht überein!');
+    end
+
+    %% Leistung im Verbraucher nach Formel (1)
+    % Elementweise Operationen (.^, ./, .*), da Rl ein Vektor ist
+    Pl = U0^2 ./ (Ri + Rl).^2 .* Rl;
+
+    %% Wirkungsgrad nach Formel (2), direkt in Prozent
+    eff = (Rl ./ Ri) ./ (1 + Rl ./ Ri) * 100;
+
+    %% Maximum der Leistung und zugehoeriger Index
+    [M, I] = max(Pl);
+
+    %% Textausgabe
+    fprintf('Die maximale Leistung beträgt: %g W.\n', M);
+    fprintf('Der Wirkungsgrad an diesem Punkt beträgt: %g %%.\n', eff(I));
+end
