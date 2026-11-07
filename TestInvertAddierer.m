@@ -20,6 +20,24 @@ Ui = [U1, U2, U3];
 %% Widerstaende: R1, R2, R3, RN
 R = [10e3; 15e3; 20e3; 5e3];
 
+%% Fehlertest: absichtlich falsche Eingaben
+% try/catch faengt den Fehler ab, damit das Skript danach weiterlaeuft
+% und die Fehlermeldung im Command Window angezeigt wird.
+
+% Fehler 1: R als Zeilenvektor statt Spaltenvektor
+try
+    invertAddierer(Ui, R');
+catch ME
+    fprintf('Fehlertest 1 (R Zeilenvektor): %s\n', ME.message);
+end
+
+% Fehler 2: R hat nur 3 statt 4 Eintraege (RN fehlt)
+try
+    invertAddierer(Ui, R(1:3));
+catch ME
+    fprintf('Fehlertest 2 (R zu kurz):      %s\n', ME.message);
+end
+
 %% Ausgangsspannung berechnen
 Ua = invertAddierer(Ui, R);
 
